@@ -126,7 +126,7 @@ export default function GitHubLogin() {
   const { accessToken, errorMessage, handleGitHubLogin } = useGitHubLogin();
   useEffect(() => {
     if (accessToken && accessToken !== 'undefined') {
-      router.push('profile');
+      router.push('home');
     }
   }, [accessToken, router]);
 

@@ -1,31 +1,38 @@
-import { StyleSheet } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import Card from '@/components/card';
+import { StyleSheet, Dimensions, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen() {
+
+  const { width, height } = Dimensions.get('window');
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      >
-      
-    </ParallaxScrollView>
+    <View>
+      <ScrollView contentContainerStyle={ styles.container } >
+        {
+          [1, 0.8, 0.5].map(opacity => (
+            <View 
+              key={opacity}
+              style={[ styles.color, {backgroundColor: "rgb(124, 126, 255)", opacity} ]}
+            >
+            </View>
+          ))
+        }
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    height: '100%',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  color: {
+    width: '100%',
+    height: 150,
+    borderRadius: 25,
+    borderCurve: 'continuous',
+    marginBottom: 15,
+  }
 });
