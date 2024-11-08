@@ -29,8 +29,8 @@ export const exchangeCodeForToken = async (code, redirect_uri) => {
       redirect_uri: redirect_uri,
     });
   
-    const { access_token } = response.data;
-    return access_token;
+    // const { access_token } = response.data;
+    return response.data;
   } catch (error) {
     console.error('Error exchanging code for token:', error);
     throw new Error('Failed to exchange code for token.');

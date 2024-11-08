@@ -4,19 +4,39 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CarouselComponent from '@/components/CarouselComponent';
 import { getRepos } from '@/services/apiCalls';
 import ProjectList from '@/components/ProjectList';
+import { getUserDetails } from '@/utils/utils';
+import { useSocket } from '@/context/SocketContext';
 
 export default function HomeScreen() {
 
   const [repos, setRepos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState({});
   const carouselData = [1, 2, 3, 4, 5];
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('testEvent', (data) => {
+        console.log('Received test event:', data);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('testEvent');
+      }
+    };
+  }, [socket]);
 
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        const username = 'johnroshan2255';
-        const data = await getRepos(username);
+        let userData = await getUserDetails();
+        setUserDetails(userData);
+        const data = await getRepos(userData.username);
         setRepos(data);
       } catch (err) {
         setError('Failed to load repositories.');
@@ -45,7 +65,7 @@ export default function HomeScreen() {
         
         {/* <CarouselComponent data={carouselData} /> */}
 
-        <ProjectList data={repos} isLoading={isLoading} username='johnroshan2255' />
+        <ProjectList data={repos} isLoading={isLoading} username={userDetails.username} />
 
         {error && <Text style={styles.error}>{error}</Text>}
 
@@ -57,7 +77,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 5,
     // height: '100%',
   },
   color: {
@@ -65,7 +85,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 25,
     borderCurve: 'continuous',
-    marginBottom: 15,
+    marginBottom: 5,
   },
   error: {
     color: 'red',

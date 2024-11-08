@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { BASE_URl } from '@/config/config';
 import { requestInterceptor, responseInterceptor, errorInterceptor } from './middleware';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333/',
+  baseURL: BASE_URl,
   timeout: 5000,
 });
 

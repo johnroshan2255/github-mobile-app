@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { SocketProvider } from '@/context/SocketContext.js'
 
 export default function Layout() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -32,16 +33,18 @@ export default function Layout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      {isLoggedIn ? (
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      ) : (
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      )}
-    </Stack>
+    <SocketProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        {isLoggedIn ? (
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        )}
+      </Stack>
+    </SocketProvider>
   );
 }

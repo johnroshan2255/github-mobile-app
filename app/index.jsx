@@ -56,13 +56,17 @@ function useGitHubLogin() {
           
           if (code) {
             // Exchange the code for an access token
-            const token = await exchangeCodeForToken(code, REDIRECT_URI);
-            if(!token || token === 'undefined'){
+            const { access_token, username, avatarUrl } = await exchangeCodeForToken(code, REDIRECT_URI);
+            if(!access_token || access_token === 'undefined'){
               setErrorMessage('Invalid token!.');
               return;
             }
-            setAccessToken(token);
-            await AsyncStorage.setItem('githubAccessToken', token);
+            setAccessToken(access_token);
+            await AsyncStorage.multiSet([
+              ['githubAccessToken', access_token],
+              ['githubUsername', username],
+              ['githubAvatarUrl', avatarUrl],
+            ]);
           }
         }
       } catch (error) {

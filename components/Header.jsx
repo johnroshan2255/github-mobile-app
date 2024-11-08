@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Animated, Easing, FlatList, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { getUserDetails } from '@/utils/utils';
 
 const Header = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,6 +11,15 @@ const Header = () => {
 
   const scaleValue = useRef(new Animated.Value(0)).current;
   const translateYValue = useRef(new Animated.Value(-60)).current;
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const details = await getUserDetails();
+      setUserDetails(details);
+    };
+    fetchUserDetails();
+  }, []);
 
   const allSuggestions = [
     'React Native',
@@ -85,7 +95,7 @@ const Header = () => {
   return (
     <View style={styles.header}>
       <View style={styles.leftSection}>
-        <Image style={styles.userImage} source={require('../assets/images/user.jpg')} />
+        <Image style={styles.userImage} source={userDetails.avatar_url} />
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.title}></Text>
