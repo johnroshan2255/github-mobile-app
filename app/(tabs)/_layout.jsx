@@ -5,6 +5,7 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import TabBar from '@/components/TabBar';
+import Header from '@/components/Header';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -15,6 +16,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        header: () => <Header />,
+        headerMode: 'none',
       }}>
       <Tabs.Screen
         name="home"
@@ -23,7 +26,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
-          headerShown: false 
+          headerShown: true 
         }}
       />
       <Tabs.Screen
@@ -33,7 +36,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
-          headerShown: false
+          headerShown: true
         }}
       />
     </Tabs>

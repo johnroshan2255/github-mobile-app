@@ -22,9 +22,9 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    // if (isLoggedIn === false && router.pathname !== '/') {
-    //   router.push('/');
-    // }
+    if (isLoggedIn === false && router.pathname !== '/') {
+      router.push('/');
+    }
   }, [isLoggedIn, router.pathname]);
 
   if (isLoggedIn === null) {
@@ -32,8 +32,12 @@ export default function Layout() {
   }
 
   return (
-    <Stack>
-      {!isLoggedIn ? (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      {isLoggedIn ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (
         <Stack.Screen name="index" options={{ headerShown: false }} />

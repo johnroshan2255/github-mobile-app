@@ -1,22 +1,54 @@
-import Card from '@/components/card';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import CarouselComponent from '@/components/CarouselComponent';
+import { getRepos } from '@/services/apiCalls';
+import ProjectList from '@/components/ProjectList';
 
 export default function HomeScreen() {
 
-  const { width, height } = Dimensions.get('window');
+  const [repos, setRepos] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const carouselData = [1, 2, 3, 4, 5];
+
+  useEffect(() => {
+    const fetchRepos = async () => {
+      try {
+        const username = 'johnroshan2255';
+        const data = await getRepos(username);
+        setRepos(data);
+      } catch (err) {
+        setError('Failed to load repositories.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRepos();
+  }, [])
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+        <View style={ styles.container }>
+          {
+            [0.5].map(opacity => (
+              <View 
+                key={opacity}
+                style={[ styles.color, {backgroundColor: "rgb(124, 126, 255)", opacity} ]}
+              >
+              </View>
+            ))
+          }
+        </View>
       <ScrollView contentContainerStyle={ styles.container } >
-        {
-          [1, 0.8, 0.5].map(opacity => (
-            <View 
-              key={opacity}
-              style={[ styles.color, {backgroundColor: "rgb(124, 126, 255)", opacity} ]}
-            >
-            </View>
-          ))
-        }
+        
+        {/* <CarouselComponent data={carouselData} /> */}
+
+        <ProjectList data={repos} isLoading={isLoading} username='johnroshan2255' />
+
+        {error && <Text style={styles.error}>{error}</Text>}
+
       </ScrollView>
     </View>
   );
@@ -26,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    height: '100%',
+    // height: '100%',
   },
   color: {
     width: '100%',
@@ -34,5 +66,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderCurve: 'continuous',
     marginBottom: 15,
-  }
+  },
+  error: {
+    color: 'red',
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+
 });

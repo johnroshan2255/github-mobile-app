@@ -6,6 +6,8 @@ import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, REDIRECT_URI } from '../config/
 import Button from '@/components/button.jsx';
 import { maybeCompleteAuthSession } from 'expo-web-browser';
 import { useRouter } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { exchangeCodeForToken } from '@/services/apiCalls.js'
 
 function useGitHubLogin() {
   const [accessToken, setAccessToken] = useState(null);
@@ -54,7 +56,7 @@ function useGitHubLogin() {
           
           if (code) {
             // Exchange the code for an access token
-            const token = await exchangeCodeForToken(code);console.log('token',token);
+            const token = await exchangeCodeForToken(code, REDIRECT_URI);
             if(!token || token === 'undefined'){
               setErrorMessage('Invalid token!.');
               return;
@@ -71,41 +73,6 @@ function useGitHubLogin() {
 
     getAccessToken();
   }, [response]);
-
-  const exchangeCodeForToken = async (code) => {
-    try {
-      // const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Accept': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     client_id: GITHUB_CLIENT_ID,
-      //     client_secret: GITHUB_CLIENT_SECRET,
-      //     code: code,
-      //     redirect_uri: REDIRECT_URI,
-      //   }),
-      // });
-
-      const tokenResponse = await fetch('http://localhost:3333/auth/exchange-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: code,
-          redirect_uri: REDIRECT_URI,
-        }),
-      });
-
-      const { access_token } = await tokenResponse.json();
-      return access_token;
-    } catch (error) {
-      console.error('Error exchanging code for token:', error);
-      setErrorMessage('Failed to exchange code for token.');
-    }
-  };
 
   const handleGitHubLogin = async () => {
     try {
@@ -124,9 +91,10 @@ function useGitHubLogin() {
 export default function GitHubLogin() {
   const router = useRouter();
   const { accessToken, errorMessage, handleGitHubLogin } = useGitHubLogin();
+  const github = <AntDesign name="github" size={24} color="white" />;
   useEffect(() => {
     if (accessToken && accessToken !== 'undefined') {
-      router.push('home');
+      router.replace('home');
     }
   }, [accessToken, router]);
 
@@ -136,7 +104,7 @@ export default function GitHubLogin() {
       {accessToken && accessToken !== 'undefined'? (
         <Text>Logged in with GitHub. Access token: {accessToken}</Text>
       ) : (
-        <Button title="Login with GitHub" onPress={handleGitHubLogin} />
+        <Button title="Login with GitHub" onPress={handleGitHubLogin} icon={github} />
       )}
     </View>
   );
