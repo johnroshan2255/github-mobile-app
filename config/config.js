@@ -9,4 +9,6 @@ export const REDIRECT_URI = AuthSession.makeRedirectUri({
 console.log(REDIRECT_URI);
 
 
-export const GITHUB_CLIENT_SECRET = 'd1a1bbef9f0ede57098bfcfb712496869bf1ef28'; 
+export const GITHUB_CLIENT_SECRET = 'd1a1bbef9f0ede57098bfcfb712496869bf1ef28';
+
+export const SOCKET_URL = 'http://localhost:3333/';

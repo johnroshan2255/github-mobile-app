@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CarouselComponent from '@/components/CarouselComponent';
 import { getRepos } from '@/services/apiCalls';
 import ProjectList from '@/components/ProjectList';
+import { useSocket } from '@/context/SocketContext';
 
 export default function HomeScreen() {
 
