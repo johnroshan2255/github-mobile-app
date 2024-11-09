@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native'; // Import Alert from React Native
 
 // Initialize the context with a default value
 const NotificationContext = createContext({
@@ -37,6 +37,7 @@ export const NotificationProvider = ({ children }) => {
       // Check if device is physical (not simulator)
       if (!Device.isDevice) {
         setError('Push notifications are not available on simulator/emulator');
+        Alert.alert('Error', 'Push notifications are not available on simulator/emulator'); // Show alert for error
         return;
       }
 
@@ -63,6 +64,7 @@ export const NotificationProvider = ({ children }) => {
 
       if (finalStatus !== 'granted') {
         setError('Permission not granted for push notifications');
+        Alert.alert('Error', 'Permission not granted for push notifications'); // Show alert for error
         return;
       }
 
@@ -74,7 +76,8 @@ export const NotificationProvider = ({ children }) => {
       setExpoPushToken(tokenData.data);
     } catch (err) {
       setError(err.message);
-      console.error('Error setting up push notifications:', err);
+      Alert.alert('Error', `Error setting up push notifications: ${err.message}`); // Show alert for error
+      console.error('Error setting up push notifications:', err); // Optional: Keep console logging for development
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +92,7 @@ export const NotificationProvider = ({ children }) => {
     const foregroundSubscription = Notifications.addNotificationReceivedListener(
       (notification) => {
         console.log('Notification received in foreground:', notification);
-        // You can add custom handling here
+        Alert.alert('Notification Received', `Received in foreground: ${notification.request.content.title}`); // Show alert for notification
       }
     );
 
@@ -98,7 +101,7 @@ export const NotificationProvider = ({ children }) => {
       (response) => {
         const { notification: { request: { content } } } = response;
         console.log('Notification response:', response);
-        // You can add custom handling here, like navigation
+        Alert.alert('Notification Response', `Response: ${content.title}`); // Show alert for notification response
       }
     );
 
@@ -136,10 +139,12 @@ export const NotificationProvider = ({ children }) => {
         trigger: null, // null means immediate delivery
       });
 
+      Alert.alert('Notification Sent', `Notification sent with title: ${title}`); // Show alert after sending notification
+
       return true;
     } catch (err) {
-      console.error('Error sending notification:', err);
       setError(err.message);
+      Alert.alert('Error', `Error sending notification: ${err.message}`); // Show alert for error
       return false;
     }
   };
@@ -169,10 +174,12 @@ export const NotificationProvider = ({ children }) => {
         body: JSON.stringify(message),
       });
 
+      Alert.alert('Remote Notification Sent', `Notification sent to token: ${expoPushToken}`); // Show alert after sending remote notification
+
       return true;
     } catch (err) {
-      console.error('Error sending remote notification:', err);
       setError(err.message);
+      Alert.alert('Error', `Error sending remote notification: ${err.message}`); // Show alert for error
       return false;
     }
   };
@@ -225,6 +232,7 @@ export const NotificationExample = () => {
   }
 
   if (error) {
+    Alert.alert('Error', `Error: ${error}`); // Show alert for error
     return <Text>Error: {error}</Text>;
   }
 

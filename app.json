@@ -11,7 +11,8 @@
     },
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "extra": {
       "githubClientId": "Ov23lib0eVqumFOMqN0K",
@@ -36,7 +37,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.johnroshan.githubdetails"
     },
     "web": {
       "bundler": "metro",

@@ -14,7 +14,6 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     try {
         const newSocket = io(SOCKET_SERVER_URL, {
-          path: '/socket.io',
           transports: ['websocket','polling'],
           reconnection: true,
           reconnectionAttempts: 5,

@@ -8,5 +8,8 @@ export const REDIRECT_URI = AuthSession.makeRedirectUri({
 
 export const GITHUB_CLIENT_SECRET = 'd1a1bbef9f0ede57098bfcfb712496869bf1ef28'; 
 
-export const SOCKET_SERVER_URL = 'http://localhost:8001';
-export const BASE_URl = 'http://localhost:3333/'
+// export const SOCKET_SERVER_URL = 'http://localhost:3333';
+// export const BASE_URl = 'http://localhost:3333/'
+
+export const SOCKET_SERVER_URL = 'https://github-mobile-app-backend-production.up.railway.app';
+export const BASE_URl = 'https://github-mobile-app-backend-production.up.railway.app/'
