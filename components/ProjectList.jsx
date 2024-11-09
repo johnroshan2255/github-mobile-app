@@ -7,9 +7,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function ProjectList({ data, isLoading, username }) {
 
-console.log(data);
-
-
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -93,11 +90,11 @@ console.log(data);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#F5F5F5',
+    padding: 0,
+    // backgroundColor: '#F5F5F5',
   },
   scrollContainer: {
-    paddingBottom: 20,
+    paddingBottom: 60,
   },
   loadingText: {
     textAlign: 'center',

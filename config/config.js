@@ -6,9 +6,7 @@ export const REDIRECT_URI = AuthSession.makeRedirectUri({
   useProxy: true,
 });
 
-console.log(REDIRECT_URI);
+export const GITHUB_CLIENT_SECRET = 'd1a1bbef9f0ede57098bfcfb712496869bf1ef28'; 
 
-
-export const GITHUB_CLIENT_SECRET = 'd1a1bbef9f0ede57098bfcfb712496869bf1ef28';
-
-export const SOCKET_URL = 'http://localhost:3333/';
+export const SOCKET_SERVER_URL = 'http://localhost:8081/socket.io';
+export const BASE_URl = 'http://192.168.29.79:3334/'
