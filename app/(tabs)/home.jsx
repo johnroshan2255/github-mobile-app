@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CarouselComponent from '@/components/CarouselComponent';
-import { getRepos } from '@/services/apiCalls';
 import ProjectList from '@/components/ProjectList';
-import { getUserDetails } from '@/utils/utils';
+import { getUserDetails, getReposData } from '@/utils/utils';
 import { useSocket } from '@/context/SocketContext';
+import { useNotification } from '@/context/NotificationContext';
 
 export default function HomeScreen() {
 
@@ -16,10 +16,12 @@ export default function HomeScreen() {
   const carouselData = [1, 2, 3, 4, 5];
 
   const { socket } = useSocket();
+  const { sendPushNotification } = useNotification();
 
   useEffect(() => {
     if (socket) {
       socket.on('testEvent', (data) => {
+        sendPushNotification('Test Notification', 'This is a test message');
         console.log('Received test event:', data);
       });
     }
@@ -34,19 +36,20 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        let userData = await getUserDetails();
+        const userData = await getUserDetails();
         setUserDetails(userData);
-        const data = await getRepos(userData.username);
+        const data = await getReposData(userData.username);
         setRepos(data);
+        setIsLoading(false);
       } catch (err) {
+        console.log(err);
         setError('Failed to load repositories.');
-      } finally {
         setIsLoading(false);
       }
     };
 
     fetchRepos();
-  }, [])
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

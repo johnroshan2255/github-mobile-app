@@ -1,9 +1,7 @@
-
-
-export default function TabTwoScreen() {
-  return (
-    <></>
-  );
+const Profile = () => {
+    return(
+        <></>
+    );
 }
 
-
+export default Profile

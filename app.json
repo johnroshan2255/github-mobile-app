@@ -6,9 +6,22 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "github-details",
+    "notification": {
+      "vapidPublicKey": "BM1LxtA4VHk7xw8aKMHqO_EaihboFIXU972yijS42WFwZcS1qcaXSc4gc7r1f-hwj50znhNSvB765nqNMrpfcfs"
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "extra": {
       "githubClientId": "Ov23lib0eVqumFOMqN0K",
-      "githubClientSecret": "d1a1bbef9f0ede57098bfcfb712496869bf1ef28"
+      "githubClientSecret": "d1a1bbef9f0ede57098bfcfb712496869bf1ef28",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7d0d7172-362a-4496-a800-d11e2fc5f67f"
+      }
     },
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -35,6 +48,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "owner": "johnroshan"
   }
 }

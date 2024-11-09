@@ -30,6 +30,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="commits"
+        options={{
+          title: 'Commits',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+          headerShown: true
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',

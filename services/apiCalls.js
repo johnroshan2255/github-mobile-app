@@ -36,3 +36,13 @@ export const exchangeCodeForToken = async (code, redirect_uri) => {
     throw new Error('Failed to exchange code for token.');
   }
 };
+
+export const getCommits = async (username, repo) => {
+  try {
+    const response = await api.get(`/user/github/commits?username=${username}&repo=${repo}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching commits from API', error);
+    throw new Error('Failed to exchange code for token.');
+  }
+}

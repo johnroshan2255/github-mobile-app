@@ -1,10 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const TabBar = ({ state, descriptors, navigation }) => {
 
     const icons = {
         home: (props) => ( <AntDesign name='home' size={20} color={'rgb(124, 126, 255)'} { ...props } /> ),
+        commits: (props) => ( <Feather name="git-commit" size={20} color={'rgb(124, 126, 255)'} { ...props } /> ),
         profile: (props) => ( <AntDesign name='user' size={20} color={'rgb(124, 126, 255)'} { ...props } /> )
     };
 
