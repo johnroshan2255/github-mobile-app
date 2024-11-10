@@ -1,4 +1,6 @@
 import api from './api';
+import { APPID, APP_TOKEN } from '@/config/config';
+import axios from 'axios';
 
 export const getData = async () => {
   try {
@@ -43,6 +45,34 @@ export const getCommits = async (username, repo) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching commits from API', error);
-    throw new Error('Failed to exchange code for token.');
+    throw new Error('Error fetching commits from API.');
+  }
+}
+
+export const getChartData = async (username) => {
+  try {
+    const response = await api.get(`/user/github/activity?username=${username}`);
+    
+    return response?.data?.data;
+  } catch (error) {
+    console.error('Error fetching activities from API', error);
+    throw new Error('Error fetching activities from API.');
+  }
+}
+
+export const sendNotification = async (title, body, dateSent, pushData, bigPictureURL) => {
+  try {
+    const response = await axios.post('https://app.nativenotify.com/api/notification',{
+      appId: APPID,
+      appToken: APP_TOKEN,
+      title: title,
+      body: body,
+      dateSent: dateSent,
+      pushData: pushData,
+      bigPictureURL: bigPictureURL
+    });
+  } catch (error) {
+    console.error('Error sending notification', error);
+    throw new Error('Error sending notification.');
   }
 }

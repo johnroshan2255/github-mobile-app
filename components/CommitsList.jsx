@@ -1,9 +1,11 @@
 // Named export
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Modal, Button, TouchableOpacity } from 'react-native';
+import RepoSelect from './RepoSelect';
+import EventSelector from './EventSelector';
 
 const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const handleRepoChange = (repoName) => {
     setSelectedRepo(repoName);
   };
@@ -13,17 +15,26 @@ const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo }) 
     value: repo.name
   }));
 
+  const submitForm = () => {
+
+  }
+
   return (
     <View style={styles.container}>
-        <SelectList 
-            setSelected={handleRepoChange}
-            data={dropdownData} 
-            save="value" 
-            defaultOption={{ key: selectedRepo, value: selectedRepo }}
-            boxStyles={styles.dropdown} 
-            placeholder="Select Repository" 
-        />
-        <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
+   
+        <RepoSelect
+            handleRepoChange={handleRepoChange}
+            dropdownData={dropdownData}
+            selectedRepo={selectedRepo}
+          />
+        <TouchableOpacity
+            style={styles.eventButton}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>Add Event</Text>
+        </TouchableOpacity>
+
+        <ScrollView contentContainerStyle={{ paddingBottom: 60, zIndex: 99 }}>
             {isLoading ? (
                 <Text>Loading commits...</Text>
             ) : data?.data?.length > 0 ? (
@@ -54,6 +65,29 @@ const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo }) 
                 <Text>No commits available</Text>
             )}
         </ScrollView>
+
+        <Modal
+          animationType="slide"
+          transparent={true} 
+          visible={modalVisible} 
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
+              <EventSelector
+                onSubmit={submitForm} 
+                repoData={dropdownData} 
+              />
+              
+            </View>
+          </View>
+        </Modal>
     </View>
   );
 };
@@ -97,6 +131,54 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
     marginRight: 10,
+  },
+
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'transparent',
+    padding: 10,
+    zIndex: 999
+  },
+  closeButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    zIndex: 999,
+    color: 'rgba(0, 0, 0, 0.5)',
+  },
+  eventButton: {
+    position: 'absolute',
+    right: 20,
+    top: '8%',
+    width:100,
+    height:40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(124, 126, 255)',
+    borderRadius: 25,
+    zIndex: 999,
+    opacity: 0.5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

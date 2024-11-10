@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getRepos } from '@/services/apiCalls';
+import { getRepos, sendNotification } from '@/services/apiCalls';
 
 export const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -43,5 +43,13 @@ export const formatDate = (dateString) => {
 
     } catch(error){
       console.error('Error getting user info from AsyncStorage:', error);
+    }
+  }
+
+  export const notify = async (title = '', body = '', dateSent = '', pushData = {}, bigPictureURL = '') => {
+    try {
+      await sendNotification(title, body, dateSent, pushData, bigPictureURL);
+    } catch (error) {
+      console.error('Error sending notification', error);
     }
   }

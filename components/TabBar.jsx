@@ -1,6 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const TabBar = ({ state, descriptors, navigation }) => {
 
@@ -73,16 +75,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'white',
-        marginHorizontal: 18,
         paddingVertical: 10,
+        marginHorizontal: 20,
         width: '90%',
         borderRadius: 25,
-        borderCurve: 'continuous',
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 10 },
         shadowRadius: 10,
-        shadowOpacity: 0.1
-
+        shadowOpacity: 0.1,
     },
     tabbarItem: {
         flex: 1,
@@ -91,5 +91,7 @@ const styles = StyleSheet.create({
         gap: 4
     }
 });
+
+
 
 export default TabBar;

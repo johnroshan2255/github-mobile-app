@@ -3,9 +3,13 @@ import { Stack } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { SocketProvider } from '@/context/SocketContext.js'
-import { NotificationProvider } from '@/context/NotificationContext.js'
+import registerNNPushToken from 'native-notify';
+import { APPID, APP_TOKEN } from '@/config/config';
 
 export default function Layout() {
+
+  registerNNPushToken(APPID, APP_TOKEN);
+
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const router = useRouter();
 
@@ -34,20 +38,18 @@ export default function Layout() {
   }
 
   return (
-    <NotificationProvider>
-      <SocketProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {isLoggedIn ? (
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-          )}
-        </Stack>
-      </SocketProvider>
-    </NotificationProvider>
+    <SocketProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        {isLoggedIn ? (
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        )}
+      </Stack>
+    </SocketProvider>
   );
 }

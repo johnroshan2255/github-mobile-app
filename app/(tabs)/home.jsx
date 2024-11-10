@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CarouselComponent from '@/components/CarouselComponent';
 import ProjectList from '@/components/ProjectList';
-import { getUserDetails, getReposData } from '@/utils/utils';
+import { getUserDetails, getReposData, notify } from '@/utils/utils';
 import { useSocket } from '@/context/SocketContext';
-import { useNotification } from '@/context/NotificationContext';
+import GitHubActivityGraph from '@/components/GitHubActivityGraph';
+import { getChartData } from '@/services/apiCalls';
 
 export default function HomeScreen() {
 
@@ -13,15 +14,18 @@ export default function HomeScreen() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({});
-  const carouselData = [1, 2, 3, 4, 5];
+  
+  const [chartData, setChartData] = useState({});
+  const [isChartLoading, setIsChartLoading] = useState(true);
 
   const { socket } = useSocket();
-  const { sendPushNotification } = useNotification();
 
+  const { width, height } = Dimensions.get('window');
+  const isTablet = width > 600;
   useEffect(() => {
     if (socket) {
       socket.on('testEvent', (data) => {
-        sendPushNotification('Test Notification', 'This is a test message');
+        notify('Test Notification', 'This is a test message', '', {}, 'https://ibb.co/S3HDP41');
         console.log('Received test event:', data);
       });
     }
@@ -34,61 +38,110 @@ export default function HomeScreen() {
   }, [socket]);
 
   useEffect(() => {
-    const fetchRepos = async () => {
+    const fetchUserDetails = async () => {
       try {
         const userData = await getUserDetails();
         setUserDetails(userData);
-        const data = await getReposData(userData.username);
-        setRepos(data);
-        setIsLoading(false);
       } catch (err) {
         console.log(err);
-        setError('Failed to load repositories.');
+        setError('Failed to load user details.');
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRepos();
+    fetchUserDetails();
   }, []);
+
+  useEffect(() => {
+    if (userDetails?.username) {
+      const fetchRepos = async () => {
+        try {
+          const data = await getReposData(userDetails.username);
+          setRepos(data);
+        } catch (err) {
+          console.log(err);
+          setError('Failed to load repositories.');
+        }
+      };
+
+      fetchRepos();
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
+    if (userDetails?.username) {
+      const fetchChartDetails = async () => {
+        try {
+          const data = await getChartData(userDetails.username);
+          setChartData(data);
+        } catch (err) {
+          console.log(err);
+          setError('Failed to load chart data.');
+        } finally {
+          setIsChartLoading(false);
+        }
+      };
+
+      fetchChartDetails();
+    }
+  }, [userDetails]);
 
   return (
     <View style={{ flex: 1 }}>
-        <View style={ styles.container }>
-          {
-            [0.5].map(opacity => (
-              <View 
-                key={opacity}
-                style={[ styles.color, {backgroundColor: "rgb(124, 126, 255)", opacity} ]}
-              >
-              </View>
-            ))
-          }
-        </View>
-      <ScrollView contentContainerStyle={ styles.container } >
-        
-        {/* <CarouselComponent data={carouselData} /> */}
+      <View style={styles.container}>
+        {[
+          0.5,
+        ].map(opacity => (
+          <View
+            key={opacity}
+            style={[
+              styles.color,
+              {
+                backgroundColor: 'rgb(96, 98, 210)', // Chart background color
+                opacity,
+                height: isTablet ? height / 3 : 180, // Adjust height based on device size
+              },
+            ]}
+          >
+            {isChartLoading ? (
+              <ActivityIndicator size="large" color="rgb(124, 126, 255)" />
+            ) : (
+              <GitHubActivityGraph
+                activityData={chartData}
+                loading={isChartLoading}
+                height={isTablet ? height / 3 : 180}
+              />
+            )}
+          </View>
+        ))}
+      </View>
+
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         <ProjectList data={repos} isLoading={isLoading} username={userDetails.username} />
 
         {error && <Text style={styles.error}>{error}</Text>}
-
       </ScrollView>
-    </View>
+  </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingVertical: 5,
-    // height: '100%',
+    paddingVertical: 10,
   },
   color: {
     width: '100%',
-    height: 150,
     borderRadius: 25,
-    borderCurve: 'continuous',
-    marginBottom: 5,
+    marginBottom: 20, 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   error: {
     color: 'red',
@@ -96,5 +149,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
-
 });

@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     justifyContent: 'space-between',
+    marginTop: 20
   },
   leftSection: {
     flexDirection: 'row',
