@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -5,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { SocketProvider } from '@/context/SocketContext.js'
 import registerNNPushToken from 'native-notify';
 import { APPID, APP_TOKEN } from '@/config/config';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function Layout() {
 
@@ -39,17 +41,19 @@ export default function Layout() {
 
   return (
     <SocketProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {isLoggedIn ? (
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        ) : (
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        )}
-      </Stack>
+      <GestureHandlerRootView>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {isLoggedIn ? (
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+          )}
+        </Stack>
+      </GestureHandlerRootView>
     </SocketProvider>
   );
 }

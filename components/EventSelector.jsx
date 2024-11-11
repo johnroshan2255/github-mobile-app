@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import RepoSelect from './RepoSelect';
 
-const EventSelector = ({ onSubmit, repoData }) => {
+const EventSelector = ({ onSubmit, repoData, isEventSubmitLoading }) => {
   const [selectedEvents, setSelectedEvents] = useState({
     push: false,
     pull_request: false,
@@ -68,7 +68,7 @@ const EventSelector = ({ onSubmit, repoData }) => {
 
       {/* Submit Button */}
       <View style={styles.submitContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={{ ...styles.button, opacity: isEventSubmitLoading ? 0.5 : 1 }} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   eventButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 25,
-    borderWidth: 2,
-    marginBottom: 10,
+    borderWidth: 1,
+    marginBottom: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     opacity: 0.8
   },
   eventText: {
-    fontSize: 16,
+    fontSize: 10,
     fontWeight: '500',
   },
   selectedText: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white', // Text color
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '500',
   },
 });

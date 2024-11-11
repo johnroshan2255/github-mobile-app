@@ -93,3 +93,13 @@ export const createEvents = async (events, selectedRepo, webhookUrl, username) =
     throw new Error('Failed create hook.');
   }
 };
+
+export const getCommitsDiff = async (username, repo, sha) => {
+  try {
+    const response = await api.get(`/user/github/commits/diff?username=${username}&repo=${repo}&sha=${sha}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching commits difference from API', error);
+    throw new Error('Error fetching commits difference from API.');
+  }
+}
