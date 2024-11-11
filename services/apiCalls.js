@@ -76,3 +76,20 @@ export const sendNotification = async (title, body, dateSent, pushData, bigPictu
     throw new Error('Error sending notification.');
   }
 }
+
+export const createEvents = async (events, selectedRepo, webhookUrl, username) => {
+  try {
+    const response = await api.post('/user/github/create/events', {
+      repoOwner: username,
+      repoName: selectedRepo,
+      webhookUrl: webhookUrl,
+      events: events,
+    });
+  
+    // const { access_token } = response.data;
+    return response.data;
+  } catch (error) {
+    console.error('Error creating hook:', error);
+    throw new Error('Failed create hook.');
+  }
+};

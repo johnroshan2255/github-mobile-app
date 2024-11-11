@@ -32,7 +32,7 @@ function useGitHubLogin() {
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: GITHUB_CLIENT_ID,
-      scopes: ["identity", "user:email", "user:follow"],
+      scopes: ["identity", "user:email", "user:follow", 'admin:repo_hook', 'repo'],
       redirectUri: REDIRECT_URI,
     },
     discovery

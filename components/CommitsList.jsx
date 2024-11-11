@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Modal, Button, TouchableOpacity } from 'react-native';
 import RepoSelect from './RepoSelect';
 import EventSelector from './EventSelector';
+import { BASE_URl } from '@/config/config';
+import { createEvents } from '@/services/apiCalls';
 
-const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo }) => {
+const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo, username }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const handleRepoChange = (repoName) => {
     setSelectedRepo(repoName);
@@ -15,8 +17,16 @@ const CommitsList = ({ data, isLoading, repos, selectedRepo, setSelectedRepo }) 
     value: repo.name
   }));
 
-  const submitForm = () => {
+  const createWebhookUrl = (username, reponame) => {
+    return `${BASE_URl}api/webhook/${username}/${reponame}`;
+  }
 
+  const submitForm = async (events, reponame) => {
+    let webhookUrl = await createWebhookUrl(username, reponame);
+
+    const response = await createEvents(events, reponame, webhookUrl, username);
+    console.log('submitForm', response);
+    
   }
 
   return (

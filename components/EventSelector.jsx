@@ -30,11 +30,11 @@ const EventSelector = ({ onSubmit, repoData }) => {
     // Collect selected events
     const selectedEventTypes = Object.keys(selectedEvents).filter(event => selectedEvents[event]);
 
-    if (selectedEventTypes.length === 0) {
-      Alert.alert('Please select at least one event');
+    if (selectedEventTypes.length === 0 || selectedRepo === '') {
+      Alert.alert('Please select event and repo!.');
     } else {
       // Submit the selected events
-      onSubmit(selectedEventTypes);
+      onSubmit(selectedEventTypes, selectedRepo);
     }
   };
 

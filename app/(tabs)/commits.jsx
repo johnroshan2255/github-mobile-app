@@ -105,6 +105,7 @@ export default function Commits() {
           repos={repos} 
           selectedRepo={selectedRepo} 
           setSelectedRepo={setSelectedRepo}   
+          username={userDetails?.username}   
         />
       ) : (
         !isLoading && <Text>No commits available</Text>

@@ -28,6 +28,11 @@ export default function HomeScreen() {
         notify('Test Notification', 'This is a test message', '', {}, 'https://ibb.co/S3HDP41');
         console.log('Received test event:', data);
       });
+
+      socket.on('githubEvent', (data) => {
+        notify('Test Notification', 'This is a test message', '', {}, 'https://ibb.co/S3HDP41');
+        console.log('Received test event:', data);
+      });
     }
 
     return () => {
