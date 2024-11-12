@@ -103,3 +103,23 @@ export const getCommitsDiff = async (username, repo, sha) => {
     throw new Error('Error fetching commits difference from API.');
   }
 }
+
+export const getUserProfileDetails = async (username) => {
+  try {
+    const response = await api.get(`/user/github/user/details?username=${username}`);
+    return response?.data?.data;
+  } catch (error) {
+    console.error('Error fetching user details from API', error);
+    throw new Error('Error fetching user details from API.');
+  }
+}
+
+export const getUserContributions = async (username) => {
+  try {
+    const response = await api.get(`/user/github/contributions?username=${username}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user details from API', error);
+    throw new Error('Error fetching user details from API.');
+  }
+}

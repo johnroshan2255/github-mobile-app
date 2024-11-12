@@ -21,7 +21,7 @@ const CommitDiff = ({ commitDiff }) => {
           <Text>- Deletions: {file.deletions}</Text>
 
           <Text style={styles.diff}>
-            {file.patch.split('\n').map((line, idx) => {
+            {file?.patch?.split('\n')?.map((line, idx) => {
               if (line.startsWith('+')) {
                 return <Text key={idx} style={styles.addedLine}>{line}</Text>;
               } else if (line.startsWith('-')) {
